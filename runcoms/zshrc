@@ -29,3 +29,6 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
 # home/bin/
 export PATH="$DOTFILES/bin:$PATH"
+
+set -k
+set -o clobber
