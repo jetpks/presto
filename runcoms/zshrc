@@ -11,3 +11,21 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+export EDITOR=vim
+# Shortcuts
+alias copyssh="pbcopy < $HOME/.ssh/hexagon.pub"
+alias reloadcli="source $HOME/.zshrc"
+alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
+alias ll="$(brew --prefix coreutils)/libexec/gnubin/ls -ahlF --color --group-directories-first"
+alias weather="curl -4 http://wttr.in"
+alias shrug="echo '¯\_(ツ)_/¯' | pbcopy"
+alias importhist='fc -RI'
+alias gs='git status'
+
+setopt bsd_echo
+
+# Local bin directories before anything else
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
+# home/bin/
+export PATH="$DOTFILES/bin:$PATH"
