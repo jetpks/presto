@@ -30,6 +30,13 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 # home/bin/
 export PATH="$DOTFILES/bin:$PATH"
 
+# make the shell behave right
 bindkey \^U backward-kill-line
 set -k
 set -o clobber
+
+# chruby
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+chruby ruby-2.4.1
+
