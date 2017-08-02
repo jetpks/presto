@@ -43,7 +43,7 @@ function ruby_prompt_string {
 }
 
 function prompt_giddie_precmd {
-  _prompt_re5et_time="$(dt=$(date '+%Y%b%e/%k.%M.%S');echo $dt:l)"
+  _prompt_re5et_time="$(dt=$(date '+%Y%b%e/%k.%M.%S');echo $dt:l | tr -d ' ')"
   vcs_info
   ruby_prompt_string
 }
