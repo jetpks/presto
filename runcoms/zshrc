@@ -21,6 +21,8 @@ alias weather="curl -4 http://wttr.in"
 alias shrug="echo '¯\_(ツ)_/¯' | pbcopy"
 alias importhist='fc -RI'
 alias gs='git status'
+alias be='bundle exec'
+alias lodig='dig @10.84.63.163'
 
 setopt bsd_echo
 
