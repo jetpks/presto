@@ -22,7 +22,7 @@ alias shrug="echo '¯\_(ツ)_/¯' | pbcopy"
 alias importhist='fc -RI'
 alias gs='git status'
 alias be='bundle exec'
-alias lodig='dig @10.84.63.163'
+alias lock='open /Users/ejacobs/ic/.prefs/ScreenSaverEngine.app'
 
 setopt bsd_echo
 
