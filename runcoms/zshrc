@@ -44,3 +44,9 @@ set -o clobber
 
 # rbenv
 rbenv global 2.4.1
+
+# dinghy
+eval $(dinghy env)
+
+# tfenv
+tfenv use 0.9.11 >/dev/null
