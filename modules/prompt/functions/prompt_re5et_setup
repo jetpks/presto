@@ -39,6 +39,11 @@ function ruby_version() {
   echo $version
 }
 
+vaulted_env() {
+  local diff=$([[ -n $VAULTED_ENV_EXPIRATION ]] && datediff now $VAULTED_ENV_EXPIRATION -f %Hh%Mm)
+  [[ -n $VAULTED_ENV ]] && echo -n "%U%F{magenta}%Bvaulted{%b%F{cyan}$VAULTED_ENV:l%f%F{black}%B-%b%F{cyan}$diff%F{magenta}%B}%b%f%u"
+}
+
 function ruby_prompt_string {
   # mri == red
   # jruby == blue
@@ -65,6 +70,7 @@ function prompt_giddie_precmd {
   _prompt_re5et_time="$(dt=$(date '+%Y%b%e/%k.%M.%S');echo $dt:l | tr -d ' ')"
   vcs_info
   ruby_prompt_string
+  vaulted=$(vaulted_env)
 }
 
 function prompt_giddie_setup {
@@ -95,7 +101,7 @@ function prompt_giddie_setup {
   zstyle ':vcs_info:*' unstagedstr '%F{red}±%f'
 
   # Define prompts.
-  PROMPT='%B%F{blue}%n%f%b%F{magenta}@%f%B%F{blue}%m%f%b%F{magenta}:%f%F{blue}%~%f${vcs_info_msg_0_} ${ruby_prompt}
+  PROMPT='%B%F{blue}%n%f%b%F{magenta}@%f%B%F{blue}%m%f%b%F{magenta}:%f%F{blue}%~%f${vcs_info_msg_0_} ${ruby_prompt} ${vaulted}
 %F{magenta}%%%f '
   RPROMPT='%(?..%F{red}%B:( %?  %b%f)%F{magenta}${_prompt_re5et_time}%f'
   SPROMPT='zsh: correct %F{magenta}%R%f to %F{green}%r%f [nyae]? '
