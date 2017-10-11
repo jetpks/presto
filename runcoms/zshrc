@@ -38,7 +38,9 @@ set -k
 set -o clobber
 
 # chruby
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
-chruby ruby-2.4.1
+#source /usr/local/share/chruby/chruby.sh
+#source /usr/local/share/chruby/auto.sh
+#chruby ruby-2.4.1
 
+# rbenv
+rbenv global 2.4.1

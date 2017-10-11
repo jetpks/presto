@@ -21,14 +21,33 @@ function +vi-git_precmd {
   fi
 }
 
+function ruby_engine() {
+  if echo $ruby_info | grep -- -; then
+    engine=$(echo $ruby_info | cut -d: -f2 | cut -d- -f1)
+  else
+    engine=ruby
+  fi
+  echo $engine
+}
+
+function ruby_version() {
+  if echo $ruby_info | grep -- -; then
+    version=$(echo $ruby_info | cut -d: -f2 | cut -d- -f2)
+  else
+    version=$(echo $ruby_info | cut -d: -f2)
+  fi
+  echo $version
+}
+
 function ruby_prompt_string {
   # mri == red
   # jruby == blue
   # else == black
   ruby-info
-  ruby_engine=$(echo $ruby_info | cut -d: -f2 | cut -d- -f1)
-  ruby_version=$(echo $ruby_info | cut -d: -f2 | cut -d- -f2)
-  case $ruby_engine in
+  engine=$(ruby_engine)
+  version=$(ruby_version)
+
+  case $engine in
     ruby)
       color=red
       ;;
@@ -39,7 +58,7 @@ function ruby_prompt_string {
       color=black
       ;;
   esac
-  export ruby_prompt="%F{$color}${ruby_engine}{%f%B${ruby_version}%b%F{$color}}%f"
+  export ruby_prompt="%F{$color}${engine}{%f%B${version}%b%F{$color}}%f"
 }
 
 function prompt_giddie_precmd {
