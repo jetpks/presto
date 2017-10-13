@@ -37,6 +37,21 @@ bindkey \^U backward-kill-line
 set -k
 set -o clobber
 
+# my date
+function pdate {
+  local dt=$(date '+%Y%b%e/%k.%M.%S')
+  echo $dt:l | tr -d ' '
+}
+
+# notes
+noteloc=${HOME}/ic/Documents/instructure/notes/
+function note {
+  local notefile="${noteloc}/$(pdate).md"
+  local notedir=$(dirname $notefile)
+  [ -d $notedir ] || mkdir $notedir
+  vim $notefile
+}
+
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
