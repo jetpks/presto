@@ -40,8 +40,13 @@ function ruby_version() {
 }
 
 vaulted_env() {
-  local diff=$([[ -n $VAULTED_ENV_EXPIRATION ]] && datediff now $VAULTED_ENV_EXPIRATION -f %Hh%Mm)
-  [[ -n $VAULTED_ENV ]] && echo -n "%U%F{magenta}%Bvaulted{%b%F{cyan}$VAULTED_ENV:l%f%F{black}%B-%b%F{cyan}$diff%F{magenta}%B}%b%f%u"
+  [[ -n $VAULTED_ENV ]] || return
+  if datetest now --lt $VAULTED_ENV_EXPIRATION; then
+    local diff=$(datediff now $VAULTED_ENV_EXPIRATION -f %Hh%Mm)
+  else
+    local diff="%B%F{black}expired%f%b"
+  fi
+  echo -n "%U%F{magenta}%Bvaulted{%b%F{cyan}$VAULTED_ENV:l%f%F{black}%B-%b%F{cyan}$diff%F{magenta}%B}%b%f%u"
 }
 
 function ruby_prompt_string {
@@ -63,7 +68,7 @@ function ruby_prompt_string {
       color=black
       ;;
   esac
-  export ruby_prompt="%F{$color}${engine}{%f%B${version}%b%F{$color}}%f"
+  export ruby_prompt="%F{$color}%B${engine}%b{%f%B${version}%b%F{$color}}%f"
 }
 
 function prompt_giddie_precmd {
