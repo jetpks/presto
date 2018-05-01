@@ -22,7 +22,7 @@ function +vi-git_precmd {
 }
 
 function ruby_engine() {
-  if echo $ruby_info | grep -- -; then
+  if echo $ruby_info | grep -q -- -; then
     engine=$(echo $ruby_info | cut -d: -f2 | cut -d- -f1)
   else
     engine=ruby
@@ -31,7 +31,7 @@ function ruby_engine() {
 }
 
 function ruby_version() {
-  if echo $ruby_info | grep -- -; then
+  if echo $ruby_info | grep -q -- -; then
     version=$(echo $ruby_info | cut -d: -f2 | cut -d- -f2)
   else
     version=$(echo $ruby_info | cut -d: -f2)

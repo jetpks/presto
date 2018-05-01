@@ -49,19 +49,72 @@ function note {
   local notefile="${noteloc}/$(pdate).md"
   local notedir=$(dirname $notefile)
   [ -d $notedir ] || mkdir $notedir
-  vim $notefile
+  subl $notefile
 }
 
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-#chruby ruby-2.4.1
-
-# rbenv
-rbenv global 2.4.1
+chruby ruby-2.5.1
 
 # dinghy
 eval $(dinghy env)
 
-# tfenv
-tfenv use 0.9.11 >/dev/null
+# go
+export GOPATH=${HOME}
+
+# ssh key
+ssh-add -K ~/.ssh/pretzel
+
+# employed since
+/Users/ejacobs/src/days-worked/days-worked.rb
+
+# bin
+export PATH="${PATH}:${HOME}/bin"
+
+# utc time
+function utc {
+  TZ=UTC date
+}
+
+# vaulted refresh
+vrefresh() {
+  if [ -z "${VAULTED_ENV}" ]; then
+		echo -n '>> No vaulted env set, use `vaulted shell <vault>` where vault is one of:'
+    vaulted list
+		return false
+  fi
+
+  echo ">> Refreshing ${VAULTED_ENV}"
+  eval $(vaulted env "${VAULTED_ENV}")
+}
+
+# focus mode
+focus_mode() {
+  echo "127.0.0.1 reddit.com www.reddit.com" | sudo tee -a /etc/hosts
+  dscacheutil -flushcache
+}
+# use GNU coreutils (actually don't because this breaks anything that detects Darwin)
+#export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+#
+## nvm
+  export NVM_DIR="$HOME/.nvm"
+  . "/usr/local/opt/nvm/nvm.sh"
+export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
+
+# local cloudgate
+cgunstable() {
+  if [ -z "$PRE_CG_UNSTABLE_PATH" ]; then
+    local_cg_bin="$HOME/src/cloudgate/bin"
+
+    export PRE_CG_UNSTABLE_PATH=$PATH
+    export PATH="$local_cg_bin:$PATH"
+  fi
+}
+
+cgstable() {
+  if [ ! -z "$PRE_CG_UNSTABLE_PATH" ]; then
+    export PATH="$PRE_CG_UNSTABLE_PATH"
+    unset PRE_CG_UNSTABLE_PATH
+  fi
+}
