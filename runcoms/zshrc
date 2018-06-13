@@ -16,18 +16,18 @@ export EDITOR=vim
 alias copyssh="pbcopy < $HOME/.ssh/hexagon.pub"
 alias reloadcli="source $HOME/.zshrc"
 alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
-alias ll="$(brew --prefix coreutils)/libexec/gnubin/ls -ahlF --color --group-directories-first"
+alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls -ahlF --color --group-directories-first"
 alias weather="curl -4 http://wttr.in"
 alias shrug="echo '¯\_(ツ)_/¯' | pbcopy"
 alias importhist='fc -RI'
 alias gs='git status'
 alias be='bundle exec'
-alias lock='open /Users/ejacobs/ic/.prefs/ScreenSaverEngine.app'
+alias lock="open ${HOME}/ic/.prefs/ScreenSaverEngine.app"
 
 setopt bsd_echo
 
 # Local bin directories before anything else
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+  export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
 # home/bin/
 export PATH="$DOTFILES/bin:$PATH"
@@ -58,16 +58,32 @@ function note {
 chruby ruby-2.5.1
 
 # dinghy
-eval $(dinghy env)
+docker() {
+  if [[ -z "$DINGHY_UP" ]] && dinghy status | grep -q stopped; then
+    echo Bringing up your dinghy...
+    dinghy up 2>&1 | pv -ptlw 44 -s 22 -N ' >> dinghy up' >/dev/null
+    export DINGHY_UP=true
+  fi
+
+  if [[ -z "$DOCKER_HOST" ]]; then
+    eval $(dinghy env)
+    export DINGHY_UP=true
+  fi
+
+  /usr/local/bin/docker "$@"
+}
 
 # go
 export GOPATH=${HOME}
 
 # ssh key
-ssh-add -K ~/.ssh/pretzel
+# suppress jobs output
+for key in pretzel curvy toolsmiths-key-safe; do
+  ssh-add -qK ~/.ssh/${key} 2>/dev/null &!
+done
 
 # employed since
-/Users/ejacobs/src/days-worked/days-worked.rb
+${HOME}/src/days-worked/days-worked.rb
 
 # bin
 export PATH="${PATH}:${HOME}/bin"
@@ -80,9 +96,9 @@ function utc {
 # vaulted refresh
 vrefresh() {
   if [ -z "${VAULTED_ENV}" ]; then
-		echo -n '>> No vaulted env set, use `vaulted shell <vault>` where vault is one of:'
+    echo -n '>> No vaulted env set, use `vaulted shell <vault>` where vault is one of:'
     vaulted list
-		return false
+    return false
   fi
 
   echo ">> Refreshing ${VAULTED_ENV}"
@@ -92,14 +108,14 @@ vrefresh() {
 # focus mode
 focus_mode() {
   echo "127.0.0.1 reddit.com www.reddit.com" | sudo tee -a /etc/hosts
-  dscacheutil -flushcache
-}
+    dscacheutil -flushcache
+  }
 # use GNU coreutils (actually don't because this breaks anything that detects Darwin)
 #export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-#
+
 ## nvm
-  export NVM_DIR="$HOME/.nvm"
-  . "/usr/local/opt/nvm/nvm.sh"
+export NVM_DIR="$HOME/.nvm"
+#. "/usr/local/opt/nvm/nvm.sh"
 export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
 
 # local cloudgate
@@ -118,3 +134,9 @@ cgstable() {
     unset PRE_CG_UNSTABLE_PATH
   fi
 }
+
+# python3
+export PATH=/usr/local/opt/python/libexec/bin:$PATH
+
+# vault
+export VAULT_ADDR=https://vault.insops.net
