@@ -55,7 +55,7 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-chruby ruby-2.5.1
+[[ $(uname) == "Darwin" ]] && chruby ruby-2.5.1
 
 # dinghy
 docker() {
@@ -83,7 +83,7 @@ for key in pretzel curvy toolsmiths-key-safe; do
 done
 
 # employed since
-${HOME}/src/days-worked/days-worked.rb
+[[ -e "${HOME}/src/days-worked/days-worked.rb" ]] && ${HOME}/src/days-worked/days-worked.rb
 
 # bin
 export PATH="${PATH}:${HOME}/bin"
