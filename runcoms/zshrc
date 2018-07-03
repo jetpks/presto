@@ -78,8 +78,10 @@ export GOPATH=${HOME}
 
 # ssh key
 # suppress jobs output
-for key in pretzel curvy toolsmiths-key-safe; do
-  ssh-add -qK ~/.ssh/${key} 2>/dev/null &!
+for key in hydrogen pretzel curvy toolsmiths-key-safe; do
+  if [[ -e "${HOME}/.ssh/${key}" ]]; then
+    ssh-add -qK ${HOME}/.ssh/${key} 2>/dev/null &!
+  fi
 done
 
 # employed since
