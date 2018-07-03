@@ -50,6 +50,7 @@ vaulted_env() {
 }
 
 function ruby_prompt_string {
+  env ruby -v >/dev/null 2>&1 || return
   # mri == red
   # jruby == blue
   # else == black
