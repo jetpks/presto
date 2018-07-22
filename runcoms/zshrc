@@ -57,21 +57,24 @@ function note {
 #source /usr/local/share/chruby/auto.sh
 [[ $(uname) == "Darwin" ]] && chruby ruby-2.5.1
 
-# dinghy
-docker() {
-  if [[ -z "$DINGHY_UP" ]] && dinghy status | grep -q stopped; then
-    echo Bringing up your dinghy...
-    dinghy up 2>&1 | pv -ptlw 44 -s 22 -N ' >> dinghy up' >/dev/null
-    export DINGHY_UP=true
-  fi
+local hostname=$(uname -n)
+if [[ "$hostname[-2,-1]" ==  '-l' ]]; then
+  # dinghy
+  docker() {
+    if [[ -z "$DINGHY_UP" ]] && dinghy status | grep -q stopped; then
+      echo Bringing up your dinghy...
+      dinghy up 2>&1 | pv -ptlw 44 -s 22 -N ' >> dinghy up' >/dev/null
+      export DINGHY_UP=true
+    fi
 
-  if [[ -z "$DOCKER_HOST" ]]; then
-    eval $(dinghy env)
-    export DINGHY_UP=true
-  fi
+    if [[ -z "$DOCKER_HOST" ]]; then
+      eval $(dinghy env)
+      export DINGHY_UP=true
+    fi
 
-  /usr/local/bin/docker "$@"
-}
+    /usr/local/bin/docker "$@"
+  }
+fi
 
 # go
 export GOPATH=${HOME}
@@ -142,3 +145,4 @@ export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
 # vault
 export VAULT_ADDR=https://vault.insops.net
+
