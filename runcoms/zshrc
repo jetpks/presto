@@ -16,18 +16,20 @@ export EDITOR=vim
 alias copyssh="pbcopy < $HOME/.ssh/hexagon.pub"
 alias reloadcli="source $HOME/.zshrc"
 alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
-alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls -ahlF --color --group-directories-first"
-alias weather="curl -4 http://wttr.in"
-alias shrug="echo '¯\_(ツ)_/¯' | pbcopy"
-alias importhist='fc -RI'
-alias gs='git status'
 alias be='bundle exec'
 alias lock="open ${HOME}/ic/.prefs/ScreenSaverEngine.app"
+
+local ls_args='-alhF --color --group-directories-first'
+if [[ -e "/usr/local/opt/coreutils/libexec/gnubin/ls" ]]; then
+  alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls ${ls_args}"
+else
+  alias ll="ls ${ls_args}"
+fi
 
 setopt bsd_echo
 
 # Local bin directories before anything else
-  export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
 # home/bin/
 export PATH="$DOTFILES/bin:$PATH"
