@@ -4,6 +4,14 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
+#
+
+#
+# Golang
+#
+
+export GOPATH=/Users/ejacobs
+export PATH=${PATH}:${GOPATH}/bin
 
 #
 # Browser

@@ -4,7 +4,11 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
+#
+#
 
+PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+#set -x
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -57,7 +61,7 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-[[ $(uname) == "Darwin" ]] && chruby ruby-2.5.1
+[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.0
 
 local hostname=$(uname -n)
 if [[ "$hostname[-2,-1]" ==  '-l' ]]; then
