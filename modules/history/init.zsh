@@ -28,7 +28,6 @@ setopt NO_SHARE_HISTORY             # Share history between all sessions.
 setopt NO_HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
 setopt NO_HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
 setopt NO_HIST_FIND_NO_DUPS         # Do not display a previously found event.
-setopt NO_HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt NO_HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt NO_HIST_BEEP                 # Beep when accessing non-existent history.
 
