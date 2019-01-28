@@ -1,0 +1,119 @@
+#
+# A colorful, friendly, multiline theme with some handy features.
+#
+# Authors:
+#   Paul Gideon Dann <pdgiddie@gmail.com>
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+# Features:
+#   - Simple VCS branch, staged, and unstaged indication.
+#   - Prompt character is different in a VCS repository.
+#   - Last command exit status is displayed when non-zero.
+#
+# Screenshots:
+#   http://i.imgur.com/rCo3S.png
+#
+
+function +vi-git_precmd {
+  # Check for untracked files, since vcs_info does not.
+  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
+    hook_com[unstaged]+='%F{green}?%f'
+  fi
+}
+
+function ruby_engine() {
+  if echo $ruby_info | grep -q -- -; then
+    engine=$(echo $ruby_info | cut -d: -f2 | cut -d- -f1)
+  else
+    engine=ruby
+  fi
+  echo $engine
+}
+
+function ruby_version() {
+  if echo $ruby_info | grep -q -- -; then
+    version=$(echo $ruby_info | cut -d: -f2 | cut -d- -f2)
+  else
+    version=$(echo $ruby_info | cut -d: -f2)
+  fi
+  echo $version
+}
+
+vaulted_env() {
+  [[ -n $VAULTED_ENV ]] || return
+  if datetest now --lt $VAULTED_ENV_EXPIRATION; then
+    local diff=$(datediff now $VAULTED_ENV_EXPIRATION -f %Hh%Mm)
+  else
+    local diff="%B%F{black}expired%f%b"
+  fi
+  echo -n "%F{magenta}%Bv/%b%U%F{cyan}$VAULTED_ENV:l%f%F{black}%B-%b%F{cyan}$diff%u%F{magenta}%B/%b%f"
+}
+
+function ruby_prompt_string {
+  env ruby -v >/dev/null 2>&1 || return
+  # mri == red
+  # jruby == blue
+  # else == black
+  ruby-info
+  engine=$(ruby_engine)
+  version=$(ruby_version)
+
+  case $engine in
+    ruby)
+      color=red
+      ;;
+    jruby)
+      color=blue
+      ;;
+    *)
+      color=black
+      ;;
+  esac
+  export ruby_prompt="%F{$color}%B${engine}%b{%f%B${version}%b%F{$color}}%f"
+}
+
+function prompt_giddie_precmd {
+  #_prompt_re5et_time="$(dt=$(date '+%Y%b%e/%k.%M.%S');echo $dt:l | tr -d ' ')"
+  _prompt_re5et_time="$(date '+%T%z')"
+  _prompt_re5et_date="$(date '+%Y-%m-%d')"
+  vcs_info
+  #ruby_prompt_string
+  vaulted=$(vaulted_env)
+}
+
+function prompt_giddie_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz vcs_info
+  autoload -Uz add-zsh-hook
+
+  # Add hook to set up prompt parameters before each command.
+  add-zsh-hook precmd prompt_giddie_precmd
+
+  # Display ruby version
+  zstyle ':prezto:module:ruby:info:version' format 'version:%v'
+
+  # Set editor-info parameters.
+  zstyle ':prezto:module:editor:info:completing' format '%F{red}...%f'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{green}--- COMMAND ---%f'
+
+  # Set vcs_info parameters.
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' get-revision true
+  zstyle ':vcs_info:*' formats ' on %F{magenta}%b%f^%8.8i %c%u'
+  zstyle ':vcs_info:*' actionformats ' on %F{magenta}%b%f^%8.8i %c%u %F{red}(%B%a%%b)%f'
+  zstyle ':vcs_info:*' stagedstr '%F{green}±%f'
+  zstyle ':vcs_info:*' unstagedstr '%F{red}±%f'
+
+  # Define prompts.
+  PROMPT='%B%F{blue}%n%f%b%F{magenta}@%f%F{blue}${_prompt_re5et_date}%f%F{magenta}T%f%F{blue}${_prompt_re5et_time}%f%F{magenta}:%f%F{blue}%2~%f${vcs_info_msg_0_} ${vaulted}
+%F{magenta}%%%f '
+  #RPROMPT='%(?..%F{red}%B:( %?  %b%f)%F{magenta}${_prompt_re5et_time}%f'
+  RPROMPT='%(?..%F{red}%B:( %?  %b%f)'
+  SPROMPT='zsh: correct %F{magenta}%R%f to %F{green}%r%f [nyae]? '
+}
+
+prompt_giddie_setup "$@"
