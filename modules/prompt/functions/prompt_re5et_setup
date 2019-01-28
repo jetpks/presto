@@ -4,6 +4,7 @@
 # Authors:
 #   Paul Gideon Dann <pdgiddie@gmail.com>
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
+#   Eric Jacobs <eric@jacobs.af>
 #
 # Features:
 #   - Simple VCS branch, staged, and unstaged indication.
@@ -72,10 +73,27 @@ function ruby_prompt_string {
   export ruby_prompt="%F{$color}%B${engine}%b{%f%B${version}%b%F{$color}}%f"
 }
 
+function date_and_time {
+  export prompt_date="$(date '+%Y-%m-%d')"
+  export prompt_date_styled="%F{cyan}${prompt_date}%f"
+
+  export prompt_seperator_styled='%B%F{red}T%f%b'
+
+  export prompt_time="$(date '+%T').$(gdate '+%N' | colrm 4)"
+  export prompt_time_styled="%F{yellow}${prompt_time}%f"
+
+  export prompt_zone="$(date '+%z')"
+  export prompt_zone_styled="%F{white}${prompt_zone}%f"
+
+  export prompt_datetime_styled="${prompt_date_styled}${prompt_seperator_styled}${prompt_time_styled}${prompt_zone_styled}"
+}
+
 function prompt_giddie_precmd {
-  _prompt_re5et_time="$(dt=$(date '+%Y%b%e/%k.%M.%S');echo $dt:l | tr -d ' ')"
+  #_prompt_re5et_time="$(dt=$(date '+%Y%b%e/%k.%M.%S');echo $dt:l | tr -d ' ')"
   vcs_info
   #ruby_prompt_string
+  date_and_time
+  up_one_line="$(echo $'\e[1A')"
   vaulted=$(vaulted_env)
 }
 
@@ -107,9 +125,10 @@ function prompt_giddie_setup {
   zstyle ':vcs_info:*' unstagedstr '%F{red}±%f'
 
   # Define prompts.
-  PROMPT='%B%F{blue}%n%f%b%F{magenta}@%f%B%F{blue}%m%f%b%F{magenta}:%f%F{blue}%2~%f${vcs_info_msg_0_} ${vaulted}
+  PROMPT='%F{cyan}%B%n%b%f%F{blue}@%f%F{cyan}%B%m%b%f%F{magenta}:%f%F{blue}%2~%f${vcs_info_msg_0_} ${vaulted}
 %F{magenta}%%%f '
-  RPROMPT='%(?..%F{red}%B:( %?  %b%f)%F{magenta}${_prompt_re5et_time}%f'
+  #RPROMPT='${up_one_line}%(?..%F{red}%B:( %?  %b%f)${prompt_datetime_styled}%'
+  RPROMPT='%(?..%F{red}%B:( %?  %b%f)${prompt_datetime_styled}%'
   SPROMPT='zsh: correct %F{magenta}%R%f to %F{green}%r%f [nyae]? '
 }
 
