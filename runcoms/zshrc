@@ -16,6 +16,9 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# cdpath
+export CDPATH="${HOME}/src"
+
 # Customize to your needs...
 export EDITOR=vim
 # Shortcuts
@@ -64,7 +67,7 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.0
+[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.2
 
 local hostname=$(uname -n)
 if [[ "$hostname[-2,-1]" ==  '-l' ]]; then
@@ -149,9 +152,16 @@ cgstable() {
   fi
 }
 
+gclone() {
+  git clone ssh://ejacobs@gerrit.instructure.com:29418/$1 && scp -p -P 29418 ejacobs@gerrit.instructure.com:hooks/commit-msg $1/.git/hooks/
+}
+
 # python3
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
 # vault
 export VAULT_ADDR=https://vault.insops.net
+
+# golang
+export GO111MODULE=on
 
