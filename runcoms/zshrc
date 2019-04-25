@@ -8,7 +8,14 @@
 #
 
 # # BEFORE prezto
-alias ls="/usr/local/opt/coreutils/libexec/gnubin/ls"
+local ls_args='-alhF --color --group-directories-first'
+if [[ -e "/usr/local/opt/coreutils/libexec/gnubin/ls" ]]; then
+  alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls ${ls_args}"
+  alias ls="/usr/local/opt/coreutils/libexec/gnubin/ls"
+else
+  alias ll="ls ${ls_args}"
+fi
+
 
 #set -x
 # Source Prezto.
