@@ -73,13 +73,21 @@ function ruby_prompt_string {
   export ruby_prompt="%F{$color}%B${engine}%b{%f%B${version}%b%F{$color}}%f"
 }
 
+function which_date {
+  if [[ -e /usr/local/bin/gdate ]]; then
+    echo "/usr/local/bin/gdate"
+  else
+    echo "/bin/date"
+  fi
+}
+
 function date_and_time {
   export prompt_date="$(date '+%Y-%m-%d')"
   export prompt_date_styled="%F{cyan}${prompt_date}%f"
 
   export prompt_seperator_styled='%B%F{red}T%f%b'
 
-  export prompt_time="$(date '+%T').$(gdate '+%N' | colrm 4)"
+  export prompt_time="$(date '+%T').$($(which_date) '+%N' | colrm 4)"
   export prompt_time_styled="%F{yellow}${prompt_time}%f"
 
   export prompt_zone="$(date '+%z')"
