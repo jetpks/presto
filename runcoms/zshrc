@@ -175,4 +175,4 @@ export PATH=/usr/local/opt/python/libexec/bin:$PATH
 export VAULT_ADDR=https://vault.insops.net
 
 # bat
-export BAT_THEME="OneHalfLight"
+export BAT_THEME="DarkNeon"
