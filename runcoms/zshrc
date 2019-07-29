@@ -32,7 +32,6 @@ export EDITOR=vim
 alias copyssh="pbcopy < $HOME/.ssh/hexagon.pub"
 alias reloadcli="source $HOME/.zshrc"
 alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
-alias be='bundle exec'
 alias lock="open ${HOME}/ic/.prefs/ScreenSaverEngine.app"
 
 local ls_args='-alhF --color --group-directories-first'
@@ -74,7 +73,11 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.2
+[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.3
+
+# ruby
+alias be='bundle exec'
+alias beerspec='be rspec'
 
 local hostname=$(uname -n)
 if [[ "$hostname[-2,-1]" ==  '-l' ]]; then
