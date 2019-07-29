@@ -135,7 +135,7 @@ vrefresh() {
 
 # focus mode
 focus_mode() {
-  echo "127.0.0.1 reddit.com www.reddit.com" | sudo tee -a /etc/hosts
+  echo "127.0.0.1 reddit.com www.reddit.com old.reddit.com news.ycombinator.com" | sudo tee -a /etc/hosts
     dscacheutil -flushcache
   }
 # use GNU coreutils (actually don't because this breaks anything that detects Darwin)
