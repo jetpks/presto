@@ -91,7 +91,7 @@ function date_and_time {
   export prompt_time_styled="%F{yellow}${prompt_time}%f"
 
   export prompt_zone="$(date '+%z')"
-  export prompt_zone_styled="%F{white}${prompt_zone}%f"
+  export prompt_zone_styled="%F{black}%B${prompt_zone}%b%f"
 
   export prompt_datetime_styled="${prompt_date_styled}${prompt_seperator_styled}${prompt_time_styled}${prompt_zone_styled}"
 }
