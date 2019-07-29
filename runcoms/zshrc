@@ -98,8 +98,9 @@ if [[ "$hostname[-2,-1]" ==  '-l' ]]; then
   }
 fi
 
-# go
+# go golang
 export GOPATH=${HOME}
+export GO111MODULE=on
 
 # ssh key
 # suppress jobs output
@@ -171,9 +172,6 @@ export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
 # vault
 export VAULT_ADDR=https://vault.insops.net
-
-# golang
-export GO111MODULE=on
 
 # bat
 export BAT_THEME="OneHalfLight"
