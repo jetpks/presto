@@ -149,7 +149,7 @@ export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
 # local cloudgate
 cgunstable() {
   if [ -z "$PRE_CG_UNSTABLE_PATH" ]; then
-    local_cg_bin="$HOME/src/cloudgate/bin"
+    local_cg_bin="$HOME/src/gerrit.instructure.com/cloudgate/bin"
 
     export PRE_CG_UNSTABLE_PATH=$PATH
     export PATH="$local_cg_bin:$PATH"
@@ -163,6 +163,7 @@ cgstable() {
   fi
 }
 
+# instructure
 gclone() {
   git clone ssh://ejacobs@gerrit.instructure.com:29418/$1 && scp -p -P 29418 ejacobs@gerrit.instructure.com:hooks/commit-msg $1/.git/hooks/
 }
