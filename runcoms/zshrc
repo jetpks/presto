@@ -73,7 +73,7 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.3
+[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.4
 
 # ruby
 alias be='bundle exec'
@@ -104,14 +104,14 @@ export GO111MODULE=on
 
 # ssh key
 # suppress jobs output
-for key in hydrogen pretzel curvy toolsmiths-key-safe; do
+for key in hydrogen pretzel curvy postlemon-toolsmiths-key; do
   if [[ -e "${HOME}/.ssh/${key}" ]]; then
     ssh-add -qK ${HOME}/.ssh/${key} 2>/dev/null &!
   fi
 done
 
 # employed since
-[[ -e "${HOME}/src/days-worked/days-worked.rb" ]] && ${HOME}/src/days-worked/days-worked.rb
+#[[ -e "${HOME}/src/days-worked/days-worked.rb" ]] && ${HOME}/src/days-worked/days-worked.rb
 
 # bin
 export PATH="${PATH}:${HOME}/bin"
@@ -169,7 +169,8 @@ gclone() {
 }
 
 # python3
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+export PATH="/Users/ejacobs/Library/Python/3.7/bin:$PATH"
 
 # vault
 export VAULT_ADDR=https://vault.insops.net
