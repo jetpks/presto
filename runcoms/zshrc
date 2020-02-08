@@ -77,7 +77,7 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.4
+[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.5
 
 # ruby
 alias be='bundle exec'
