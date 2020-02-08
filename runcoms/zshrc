@@ -83,25 +83,6 @@ function note {
 alias be='bundle exec'
 alias beerspec='be rspec'
 
-local hostname=$(uname -n)
-if [[ "$hostname[-2,-1]" ==  '-l' ]]; then
-  # dinghy
-  docker() {
-    if [[ -z "$DINGHY_UP" ]] && dinghy status | grep -q stopped; then
-      echo Bringing up your dinghy...
-      dinghy up 2>&1 | pv -ptlw 44 -s 22 -N ' >> dinghy up' >/dev/null
-      export DINGHY_UP=true
-    fi
-
-    if [[ -z "$DOCKER_HOST" ]]; then
-      eval $(dinghy env)
-      export DINGHY_UP=true
-    fi
-
-    /usr/local/bin/docker "$@"
-  }
-fi
-
 # go golang
 export GOPATH=${HOME}
 export GO111MODULE=on
