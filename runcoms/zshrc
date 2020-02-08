@@ -25,9 +25,8 @@ fi
 
 # cdpath
 export CDPATH="${HOME}/src"
-
-# Customize to your needs...
 export EDITOR=vim
+
 # Shortcuts
 alias copyssh="pbcopy < $HOME/.ssh/hexagon.pub"
 alias reloadcli="source $HOME/.zshrc"
@@ -44,15 +43,20 @@ fi
 
 setopt bsd_echo
 
-# Local bin directories before anything else
+# local bin directories first
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
-# home/bin/
+# dotfiles/bin more first
 export PATH="$DOTFILES/bin:$PATH"
 
-# make the shell behave right
+# home/bin last
+export PATH="${PATH}:${HOME}/bin"
+
+# make ^U kill from the cursor to the beginning of the line
 bindkey \^U backward-kill-line
 set -k
+
+# don't warn about overwriting files with redirection
 set -o clobber
 
 # my date
@@ -104,17 +108,11 @@ export GO111MODULE=on
 
 # ssh key
 # suppress jobs output
-for key in hydrogen pretzel curvy postlemon-toolsmiths-key; do
+for key in hydrogen pretzel curvy; do
   if [[ -e "${HOME}/.ssh/${key}" ]]; then
     ssh-add -qK ${HOME}/.ssh/${key} 2>/dev/null &!
   fi
 done
-
-# employed since
-#[[ -e "${HOME}/src/days-worked/days-worked.rb" ]] && ${HOME}/src/days-worked/days-worked.rb
-
-# bin
-export PATH="${PATH}:${HOME}/bin"
 
 # utc time
 function utc {
@@ -133,11 +131,6 @@ vrefresh() {
   eval $(vaulted env "${VAULTED_ENV}")
 }
 
-# focus mode
-focus_mode() {
-  echo "127.0.0.1 reddit.com www.reddit.com old.reddit.com news.ycombinator.com" | sudo tee -a /etc/hosts
-    dscacheutil -flushcache
-  }
 # use GNU coreutils (actually don't because this breaks anything that detects Darwin)
 #export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
@@ -145,28 +138,6 @@ focus_mode() {
 export NVM_DIR="$HOME/.nvm"
 #. "/usr/local/opt/nvm/nvm.sh"
 export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
-
-# local cloudgate
-cgunstable() {
-  if [ -z "$PRE_CG_UNSTABLE_PATH" ]; then
-    local_cg_bin="$HOME/src/gerrit.instructure.com/cloudgate/bin"
-
-    export PRE_CG_UNSTABLE_PATH=$PATH
-    export PATH="$local_cg_bin:$PATH"
-  fi
-}
-
-cgstable() {
-  if [ ! -z "$PRE_CG_UNSTABLE_PATH" ]; then
-    export PATH="$PRE_CG_UNSTABLE_PATH"
-    unset PRE_CG_UNSTABLE_PATH
-  fi
-}
-
-# instructure
-gclone() {
-  git clone ssh://ejacobs@gerrit.instructure.com:29418/$1 && scp -p -P 29418 ejacobs@gerrit.instructure.com:hooks/commit-msg $1/.git/hooks/
-}
 
 # python3
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
@@ -177,3 +148,14 @@ export VAULT_ADDR=https://vault.insops.net
 
 # bat
 export BAT_THEME="DarkNeon"
+
+# zsh completions
+fpath=(/usr/local/share/zsh-completions $fpath)
+
+# broot
+source /Users/ejacobs/Library/Preferences/org.dystroy.broot/launcher/bash/br
+
+# Local RCs
+for local_rc in ${HOME}/.zprezto/.local/*; do
+  source "${local_rc}"
+done
