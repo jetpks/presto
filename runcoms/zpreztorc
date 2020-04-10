@@ -164,7 +164,7 @@ zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
 #
 
 # Set the SSH identities to load into the agent.
-zstyle ':prezto:module:ssh:load' identities 'hexagon'
+# zstyle ':prezto:module:ssh:load' identities 'hexagon'
 
 #
 # Syntax Highlighting

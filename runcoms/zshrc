@@ -7,6 +7,10 @@
 #
 #
 
+function on_mac() {
+  [[ $(uname) == "Darwin" ]]
+}
+
 # # BEFORE prezto
 local ls_args='-alhF --color --group-directories-first'
 if [[ -e "/usr/local/opt/coreutils/libexec/gnubin/ls" ]]; then
@@ -77,7 +81,7 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-[[ $(uname) == "Darwin" ]] && chruby ruby-2.6.5
+on_mac && chruby ruby-2.6.5
 
 # ruby
 alias be='bundle exec'
@@ -89,11 +93,11 @@ export GO111MODULE=on
 
 # ssh key
 # suppress jobs output
-for key in hydrogen pretzel curvy; do
-  if [[ -e "${HOME}/.ssh/${key}" ]]; then
-    ssh-add -qK ${HOME}/.ssh/${key} 2>/dev/null &!
-  fi
-done
+# for key in hydrogen pretzel curvy; do
+#   if [[ -e "${HOME}/.ssh/${key}" ]]; then
+#     ssh-add -qK ${HOME}/.ssh/${key} 2>/dev/null &!
+#   fi
+# done
 
 # utc time
 function utc {
@@ -134,9 +138,16 @@ export BAT_THEME="DarkNeon"
 fpath=(/usr/local/share/zsh-completions $fpath)
 
 # broot
-source /Users/ejacobs/Library/Preferences/org.dystroy.broot/launcher/bash/br
+on_mac && source /Users/ejacobs/Library/Preferences/org.dystroy.broot/launcher/bash/br
 
 # Local RCs
 for local_rc in ${HOME}/.zprezto/.local/*; do
   source "${local_rc}"
 done
+
+# rapture
+[[ -e ${HOME}/bin/rapture ]] && eval "$( command rapture shell-init )"
+
+# krew
+[[ -d "${HOME}/.krew/bin" ]] && export PATH="${PATH}:${HOME}/.krew/bin"
+

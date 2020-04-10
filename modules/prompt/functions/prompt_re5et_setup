@@ -50,6 +50,16 @@ vaulted_env() {
   echo -n "%F{magenta}%Bv/%b%U%F{cyan}$VAULTED_ENV:l%f%F{black}%B-%b%F{cyan}$diff%u%F{magenta}%B/%b%f"
 }
 
+rapture_env() {
+  [[ -n $RAPTURE_ROLE ]] || return
+  if datetest now --lt $RAPTURE_ROLE_EXPIRATION; then
+    local diff=$(datediff now $RAPTURE_ROLE_EXPIRATION -f %Hh%Mm)
+  else
+    local diff="%B%F{black}expired%f%b"
+  fi
+  echo -n "%b%U%F{cyan}$RAPTURE_ROLE:l%f%F{black}%B-%b%F{cyan}$diff%u%F{magenta}%B/%b%f"
+}
+
 function ruby_prompt_string {
   env ruby -v >/dev/null 2>&1 || return
   # mri == red
@@ -103,6 +113,7 @@ function prompt_giddie_precmd {
   date_and_time
   up_one_line="$(echo $'\e[1A')"
   vaulted=$(vaulted_env)
+  rapture=$(rapture_env)
 }
 
 function prompt_giddie_setup {
@@ -133,7 +144,7 @@ function prompt_giddie_setup {
   zstyle ':vcs_info:*' unstagedstr '%F{red}±%f'
 
   # Define prompts.
-  PROMPT='%F{cyan}%B%n%b%f%F{blue}@%f%F{cyan}%B%m%b%f%F{magenta}:%f%F{blue}%2~%f${vcs_info_msg_0_} ${vaulted}
+  PROMPT='%F{cyan}%B%n%b%f%F{blue}@%f%F{cyan}%B%m%b%f%F{magenta}:%f%F{blue}%2~%f${vcs_info_msg_0_} ${vaulted}${rapture}
 %F{magenta}%%%f '
   #RPROMPT='${up_one_line}%(?..%F{red}%B:( %?  %b%f)${prompt_datetime_styled}%'
   RPROMPT='%(?..%F{red}%B:( %?  %b%f)${prompt_datetime_styled}%'
