@@ -81,7 +81,7 @@ function note {
 # chruby
 #source /usr/local/share/chruby/chruby.sh
 #source /usr/local/share/chruby/auto.sh
-on_mac && chruby ruby-2.6.5
+on_mac && chruby ruby-2.7.1
 
 # ruby
 alias be='bundle exec'
