@@ -35,7 +35,7 @@ export EDITOR=vim
 alias copyssh="pbcopy < $HOME/.ssh/hexagon.pub"
 alias reloadcli="source $HOME/.zshrc"
 alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
-alias lock="open ${HOME}/ic/.prefs/ScreenSaverEngine.app"
+alias lock="open /System/Library/CoreServices/ScreenSaverEngine.app"
 
 local ls_args='-alhF --color --group-directories-first'
 if [[ -e "/usr/local/opt/coreutils/libexec/gnubin/ls" ]]; then
@@ -138,7 +138,7 @@ export BAT_THEME="DarkNeon"
 fpath=(/usr/local/share/zsh-completions $fpath)
 
 # broot
-on_mac && source /Users/ejacobs/Library/Preferences/org.dystroy.broot/launcher/bash/br
+# on_mac && source /Users/ejacobs/Library/Preferences/org.dystroy.broot/launcher/bash/br
 
 # Local RCs
 for local_rc in ${HOME}/.zprezto/.local/*; do
