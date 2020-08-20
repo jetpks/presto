@@ -132,7 +132,7 @@ export PATH="/Users/ejacobs/Library/Python/3.7/bin:$PATH"
 export VAULT_ADDR=https://vault.insops.net
 
 # bat
-export BAT_THEME="DarkNeon"
+export BAT_THEME="Monokai Extended Bright"
 
 # zsh completions
 fpath=(/usr/local/share/zsh-completions $fpath)
