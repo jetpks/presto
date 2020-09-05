@@ -7,11 +7,15 @@
 #
 #
 
+###
+# detect macOS
 function on_mac() {
   [[ $(uname) == "Darwin" ]]
 }
 
-# # BEFORE prezto
+###
+# ls modifications
+# BEFORE prezto
 local ls_args='-alhF --color --group-directories-first'
 if [[ -e "/usr/local/opt/coreutils/libexec/gnubin/ls" ]]; then
   alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls ${ls_args}"
@@ -20,23 +24,28 @@ else
   alias ll="ls ${ls_args}"
 fi
 
-
-#set -x
-# Source Prezto.
+###
+# zprezto
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# cdpath
-export CDPATH="${HOME}/src"
+###
+# envs
 export EDITOR=vim
 
-# Shortcuts
+###
+# aliases
 alias copyssh="pbcopy < $HOME/.ssh/hexagon.pub"
 alias reloadcli="source $HOME/.zshrc"
 alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
 alias lock="open /System/Library/CoreServices/ScreenSaverEngine.app"
+alias be='bundle exec'
+alias beerspec='be rspec'
 
+###
+# ls modifications
+# TODO Why is this here twice?
 local ls_args='-alhF --color --group-directories-first'
 if [[ -e "/usr/local/opt/coreutils/libexec/gnubin/ls" ]]; then
   alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls ${ls_args}"
@@ -45,30 +54,24 @@ else
   alias ll="ls ${ls_args}"
 fi
 
-setopt bsd_echo
-
+###
+# path modifications
+#
 # local bin directories first
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+# path modifications
+# local/bin first, home/bin last
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH:${HOME}/bin"
 
-# dotfiles/bin more first
-export PATH="$DOTFILES/bin:$PATH"
-
-# home/bin last
-export PATH="${PATH}:${HOME}/bin"
-
+###
+# shell opts
 # make ^U kill from the cursor to the beginning of the line
+setopt bsd_echo
 bindkey \^U backward-kill-line
 set -k
-
 # don't warn about overwriting files with redirection
 set -o clobber
 
-# my date
-function pdate {
-  local dt=$(date '+%Y%b%e/%k.%M.%S')
-  echo $dt:l | tr -d ' '
-}
-
+###
 # notes
 noteloc=${HOME}/ic/Documents/instructure/notes/
 function note {
@@ -78,33 +81,24 @@ function note {
   subl $notefile
 }
 
-# chruby
-#source /usr/local/share/chruby/chruby.sh
-#source /usr/local/share/chruby/auto.sh
-on_mac && chruby ruby-2.7.1
-
+###
 # ruby
-alias be='bundle exec'
-alias beerspec='be rspec'
+# chruby to ruby-2.6.6 by default
+on_mac && chruby ruby-2.6.6
 
-# go golang
+###
+# golang
 export GOPATH=${HOME}
 export GO111MODULE=on
 
-# ssh key
-# suppress jobs output
-# for key in hydrogen pretzel curvy; do
-#   if [[ -e "${HOME}/.ssh/${key}" ]]; then
-#     ssh-add -qK ${HOME}/.ssh/${key} 2>/dev/null &!
-#   fi
-# done
-
-# utc time
+###
+# time
 function utc {
   TZ=UTC date
 }
 
-# vaulted refresh
+###
+# vaulted & rapture
 vrefresh() {
   if [ -z "${VAULTED_ENV}" ]; then
     echo -n '>> No vaulted env set, use `vaulted shell <vault>` where vault is one of:'
@@ -116,41 +110,44 @@ vrefresh() {
   eval $(vaulted env "${VAULTED_ENV}")
 }
 
-# use GNU coreutils (actually don't because this breaks anything that detects Darwin)
-#export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+[[ -e ${HOME}/bin/rapture ]] && eval "$( command rapture shell-init )"
 
-## nvm
+###
+# node.js
 export NVM_DIR="$HOME/.nvm"
 #. "/usr/local/opt/nvm/nvm.sh"
 export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
 
+###
 # python3
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/Users/ejacobs/Library/Python/3.7/bin:$PATH"
 
+###
 # vault
 export VAULT_ADDR=https://vault.insops.net
 
+###
 # bat
 export BAT_THEME="Monokai Extended Bright"
 
+###
 # zsh completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# broot
-# on_mac && source /Users/ejacobs/Library/Preferences/org.dystroy.broot/launcher/bash/br
-
-# Local RCs
+###
+# local RCs
 for local_rc in ${HOME}/.zprezto/.local/*; do
   source "${local_rc}"
 done
 
-# rapture
-[[ -e ${HOME}/bin/rapture ]] && eval "$( command rapture shell-init )"
-
+###
 # krew
 [[ -d "${HOME}/.krew/bin" ]] && export PATH="${PATH}:${HOME}/.krew/bin"
 
+###
+# body
+#
 # print the header (the first line of input)
 # and then run the specified command on the body (the rest of the input)
 # use it in a pipeline, e.g. ps | body grep somepattern
@@ -160,4 +157,8 @@ body() {
     printf '%s\n' "$header"
     "$@"
 }
+
+###
+# gpg tty
+export GPG_TTY=`tty`
 
