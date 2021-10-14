@@ -162,3 +162,22 @@ body() {
 # gpg tty
 export GPG_TTY=`tty`
 
+###
+# linux specific items (hexagon.slush.systems)
+
+if [[ `uname -n` == 'hexagon.slush.systems' ]]; then
+
+    ###
+    # fake pbcopy/pbpaste
+    alias pbcopy='wl-copy'
+    alias pbpaste='wl-paste'
+
+    ###
+    # have firefox use wayland:
+    export MOZ_ENABLE_WAYLAND=1
+
+    ###
+    # ssh/keychain
+    eval $(keychain --eval --quiet --nogui eric.hexagon.slush.systems)
+fi
+
