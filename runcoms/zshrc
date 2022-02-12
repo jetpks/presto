@@ -84,7 +84,7 @@ function note {
 ###
 # ruby
 # chruby to ruby-2.6.6 by default
-on_mac && chruby ruby-2.6.6
+on_mac && chruby ruby-2.7.2
 
 ###
 # golang
