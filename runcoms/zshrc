@@ -137,6 +137,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 ###
 # local RCs
+[[ ! -d ${HOME}/.zprezto/.local ]] && mkdir ${HOME}/.zprezto/.local
 for local_rc in ${HOME}/.zprezto/.local/*; do
   source "${local_rc}"
 done
